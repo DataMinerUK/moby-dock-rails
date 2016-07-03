@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:9.4.8
+    environment:
+      POSTGRES_USER: mobydock
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - '5432:5432'
+    volumes:
+      - mobydock-postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:2.8.23
+    ports:
+      - '6379:6379'
+    volumes:
+      - mobydock-redis:/var/lib/redis/data
+
+  mobydock:
+    build: .
+    volumes:
+      - .:/mobydock
+    ports:
+      - '8000:8000'
+    env_file:
+      - .mobydock.env
+
+volumes:
+  mobydock-postgres:
+  mobydock-redis:
